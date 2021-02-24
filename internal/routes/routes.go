@@ -12,26 +12,33 @@ func handleGetTasks(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"events": events})
 }
 
-// InitializeRoutes ...
-func InitializeRoutes(r *gin.Engine) {
+// Init ...
+func Init(r *gin.Engine) {
 	// load html templates
 	r.LoadHTMLGlob("templates/*")
+}
 
-	// router handlers
-	r.GET("/", func(c *gin.Context) {
-		//c.JSON(http.StatusOK, gin.H{"Welcome": "to Glance"})
-		// Call the HTML method of the Context to render a template
-		c.HTML(
-			// Set the HTTP status to 200 (OK)
-			http.StatusOK,
-			// Use the index.html template
-			"index.html",
-			// Pass the data that the page uses (in this case, 'title')
-			gin.H{
-				"title": "Home Page",
-			},
-		)
-	})
+// InitializeRoutes ...
+func InitializeRoutes(r *gin.Engine) {
 
-	r.GET("/events/", handleGetTasks)
+	// Handle the index route
+	r.GET("/", showIndexPage)
+}
+
+func showIndexPage(c *gin.Context) {
+	events := model.GetDefaultEvents()
+
+	// Call the HTML method of the Context to render a template
+	c.HTML(
+		// Set the HTTP status to 200 (OK)
+		http.StatusOK,
+		// Use the index.html template
+		"index.html",
+		// Pass the data that the page uses
+		gin.H{
+			"title":   "Home Page",
+			"payload": events,
+		},
+	)
+
 }
