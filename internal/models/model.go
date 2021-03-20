@@ -1,7 +1,8 @@
-package model
+package models
 
 import (
 	"encoding/json"
+	"errors"
 	"log"
 )
 
@@ -35,6 +36,19 @@ func GetDefaultEvents() []Event {
 		},
 	}
 	return events
+}
+
+// GetEventsByID .. return event for specific ID
+func GetEventsByID(eid int) (*Event, error) {
+	events := GetDefaultEvents()
+
+	for _, e := range events {
+		if e.ID == eid {
+			return &e, nil
+		}
+	}
+
+	return nil, errors.New("Event not found")
 }
 
 // Encode .. returns json encoded event

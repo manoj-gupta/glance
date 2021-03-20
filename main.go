@@ -1,22 +1,31 @@
 package main
 
 import (
-	"fmt"
+	"log"
 
-	"github.com/gin-gonic/gin"
-	"github.com/manoj-gupta/glance/internal/routes"
+	"github.com/joho/godotenv"
 )
 
+// init is invoked before main()
+func init() {
+	// loads values from .env into the system
+	if err := godotenv.Load(); err != nil {
+		log.Print("No .env file found")
+	}
+}
+
 func main() {
-	fmt.Println("Hello, Glance")
+	// Initialize app
+	app := App{}
+	err := app.Initialize()
+	if err != nil {
+		log.Fatal("App Initialization failed")
+		return
+	}
 
-	// Create the router
-	router := gin.Default()
+	// Clean up app
+	defer app.DeInitialize()
 
-	// Initialize the routes
-	routes.Init(router)
-	routes.InitializeRoutes(router)
-
-	// Run router
-	router.Run()
+	// Start app
+	app.Run()
 }
