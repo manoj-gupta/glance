@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/manoj-gupta/glance/internal/models"
+	"github.com/manoj-gupta/glance/internal/views"
 )
 
 func handleGetTasks(c *gin.Context) {
@@ -13,10 +14,22 @@ func handleGetTasks(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"events": events})
 }
 
-// Init ...
-func Init(r *gin.Engine) {
+// Init ... Initialize routes
+func Init() (*gin.Engine, error) {
+	r := gin.Default()
+
 	// load html templates
 	r.LoadHTMLGlob("templates/*")
+
+	// Initialize the routes
+	InitializeRoutes(r)
+
+	return r, nil
+}
+
+// DeInit ... Initialize routes
+func DeInit(r *gin.Engine) {
+	//TODO
 }
 
 // InitializeRoutes ...
@@ -25,11 +38,23 @@ func InitializeRoutes(r *gin.Engine) {
 	// Handle the index route
 	r.GET("/", showIndexPage)
 
-	// Handle the index route
-	r.GET("/todos", showTodosPage)
+	// Handle the todo route
+	setupToDoRoutes(r)
+	//r.GET("/todos", showTodosPage)
 
 	// Handle GET requests at /event/view/event_id
 	r.GET("/event/view/:event_id", showEvent)
+}
+
+func setupToDoRoutes(r *gin.Engine) {
+	v1 := r.Group("/v1")
+	{
+		v1.GET("todo", views.GetTodos)
+		v1.POST("todo", views.CreateTodo)
+		v1.GET("todo/:id", views.GetTodo)
+		v1.PUT("todo/:id", views.UpdateTodo)
+		v1.DELETE("todo/:id", views.DeleteTodo)
+	}
 }
 
 func showIndexPage(c *gin.Context) {

@@ -1,7 +1,6 @@
 package db
 
 import (
-	"database/sql"
 	"fmt"
 	"os"
 	"strconv"
@@ -9,7 +8,12 @@ import (
 
 	// needed for "postgres" driver
 	_ "github.com/lib/pq"
+
+	"github.com/jinzhu/gorm"
 )
+
+// DB .. global variable accessed by models
+var DB *gorm.DB
 
 // Config ... represents db configuration
 type Config struct {
@@ -44,22 +48,29 @@ func getURL(dbConfig *Config) string {
 	)
 }
 
-// Initialize .. initialize database
-func Initialize() (*sql.DB, error) {
+// Init .. initialize database
+func Init() (*gorm.DB, error) {
 	cfg := newConfig()
 	connString := getURL(cfg)
-	db, err := sql.Open("postgres", connString)
+	db, err := gorm.Open("postgres", connString)
 	if err != nil {
 		return nil, err
 	}
 
-	err = db.Ping()
+	err = db.DB().Ping()
 	if err != nil {
 		return nil, err
 	}
+	DB = db
 
 	fmt.Println("db: successfully connected!")
 	return db, err
+}
+
+// DeInit .. deinitialize database
+func DeInit(db *gorm.DB) {
+	DB = nil
+	db.Close()
 }
 
 // getEnv ... read an environment variable or return a default value

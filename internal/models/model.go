@@ -11,6 +11,18 @@ const (
 	monthly = 24 * 60 * 60
 )
 
+// Todo .. json binding to models.Todo
+type Todo struct {
+	ID          uint   `json:"id"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+}
+
+// TableName .. todo table name
+func (b *Todo) TableName() string {
+	return "todo"
+}
+
 // Event - Model of a basic event
 type Event struct {
 	ID    int    `json:"id"`
