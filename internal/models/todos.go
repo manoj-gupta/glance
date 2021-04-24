@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 
 	// needed for "postgres" driver
 	_ "github.com/lib/pq"
@@ -35,7 +34,6 @@ func GetTodo(todo *Todo, id string) (err error) {
 
 // UpdateTodo .. DB interface to update a todo item with specified id
 func UpdateTodo(todo *Todo, id string) (err error) {
-	fmt.Println(todo)
 	db.DB.Save(todo)
 	return nil
 }

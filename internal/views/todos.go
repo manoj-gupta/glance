@@ -50,7 +50,9 @@ func UpdateTodo(c *gin.Context) {
 	err := models.GetTodo(&todo, id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, todo)
+		return
 	}
+	todo.Status = true
 	c.BindJSON(&todo)
 	err = models.UpdateTodo(&todo, id)
 	if err != nil {
@@ -69,5 +71,24 @@ func DeleteTodo(c *gin.Context) {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
 		c.JSON(http.StatusOK, gin.H{"id:" + id: "deleted"})
+	}
+}
+
+// UndoTodo .. undo a task
+func UndoTodo(c *gin.Context) {
+	var todo models.Todo
+	id := c.Params.ByName("id")
+	err := models.GetTodo(&todo, id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, todo)
+		return
+	}
+	todo.Status = false
+	c.BindJSON(&todo)
+	err = models.UpdateTodo(&todo, id)
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	} else {
+		c.JSON(http.StatusOK, todo)
 	}
 }
