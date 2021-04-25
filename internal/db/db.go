@@ -27,11 +27,11 @@ type Config struct {
 // New returns a new Config struct
 func newConfig() *Config {
 	conf := Config{
-		host:     getEnv("DB_HOST", "localhost"),
-		port:     getEnvAsInt("DB_PORT", 5432),
-		user:     getEnv("DB_USERNAME", "postgres"),
-		password: getEnv("DB_PASSWORD", "postgres"),
-		dbname:   getEnv("DB_NAME", "testdb"),
+		host:     getEnv("POSTGRES_HOST", "database"),
+		port:     getEnvAsInt("POSTGRES_PORT", 5432),
+		user:     getEnv("POSTGRES_USER", "postgres"),
+		password: getEnv("POSTGRES_PASSWORD", "postgres"),
+		dbname:   getEnv("POSTGRES_DB", "testdb"),
 	}
 	return &conf
 }
@@ -54,6 +54,7 @@ func Init() (*gorm.DB, error) {
 	connString := getURL(cfg)
 	db, err := gorm.Open("postgres", connString)
 	if err != nil {
+		fmt.Printf("Cannot connect to %s database! %s\n", cfg.dbname, connString)
 		return nil, err
 	}
 
@@ -63,7 +64,7 @@ func Init() (*gorm.DB, error) {
 	}
 	DB = db
 
-	fmt.Println("db: successfully connected!")
+	fmt.Printf("Connected to %s database!\n", cfg.dbname)
 	return db, err
 }
 
