@@ -67,7 +67,7 @@ func (a *App) Init() error {
 // Run ... run app
 func (a *App) Run() {
 	// Run router
-	a.router.Run()
+	a.router.Run(":8080")
 }
 
 // DeInit ... deinit app
