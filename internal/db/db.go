@@ -2,14 +2,12 @@ package db
 
 import (
 	"fmt"
-	"os"
-	"strconv"
-	"strings"
 
 	// needed for "postgres" driver
+	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
 
-	"github.com/jinzhu/gorm"
+	"github.com/manoj-gupta/glance/internal/utils"
 )
 
 // DB .. global variable accessed by models
@@ -27,11 +25,11 @@ type Config struct {
 // New returns a new Config struct
 func newConfig() *Config {
 	conf := Config{
-		host:     getEnv("POSTGRES_HOST", "database"),
-		port:     getEnvAsInt("POSTGRES_PORT", 5432),
-		user:     getEnv("POSTGRES_USER", "postgres"),
-		password: getEnv("POSTGRES_PASSWORD", "postgres"),
-		dbname:   getEnv("POSTGRES_DB", "testdb"),
+		host:     utils.GetEnv("POSTGRES_HOST", "database"),
+		port:     utils.GetEnvAsInt("POSTGRES_PORT", 5432),
+		user:     utils.GetEnv("POSTGRES_USER", "postgres"),
+		password: utils.GetEnv("POSTGRES_PASSWORD", "postgres"),
+		dbname:   utils.GetEnv("POSTGRES_DB", "testdb"),
 	}
 	return &conf
 }
@@ -72,45 +70,4 @@ func Init() (*gorm.DB, error) {
 func DeInit(db *gorm.DB) {
 	DB = nil
 	db.Close()
-}
-
-// getEnv ... read an environment variable or return a default value
-func getEnv(key string, defaultVal string) string {
-	if value, exists := os.LookupEnv(key); exists {
-		return value
-	}
-
-	return defaultVal
-}
-
-// getEnvAsInt ... read an environment variable into integer or return a default value
-func getEnvAsInt(name string, defaultVal int) int {
-	valueStr := getEnv(name, "")
-	if value, err := strconv.Atoi(valueStr); err == nil {
-		return value
-	}
-
-	return defaultVal
-}
-
-// getEnvAsBool .. read an environment variable into a bool or return default value
-func getEnvAsBool(name string, defaultVal bool) bool {
-	valStr := getEnv(name, "")
-	if val, err := strconv.ParseBool(valStr); err == nil {
-		return val
-	}
-
-	return defaultVal
-}
-
-// getEnvAsSlice ... read an environment variable into a string slice or return default value
-func getEnvAsSlice(name string, defaultVal []string, sep string) []string {
-	valStr := getEnv(name, "")
-
-	if valStr == "" {
-		return defaultVal
-	}
-
-	val := strings.Split(valStr, sep)
-	return val
 }

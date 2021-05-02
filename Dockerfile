@@ -1,10 +1,7 @@
 FROM golang:1.16-alpine AS builder
 
 # Set necessary environment variables
-ENV GO111MODULE=on \
-    CGO_ENABLED=0 \
-    GOOS=linux \
-    GOARCH=amd64
+ENV GO111MODULE=on
 
 # Move to working directory /build
 WORKDIR /build
@@ -18,7 +15,7 @@ RUN go mod download
 COPY . .
 
 # Build the application
-RUN go build -o glance .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o glance .
 
 # Move to /dist directory as the place for resulting binary folder
 WORKDIR /dist
