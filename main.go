@@ -53,6 +53,7 @@ func (a *App) Init() error {
 
 	// DB migrate
 	a.db.AutoMigrate(&models.Todo{})
+	a.db.AutoMigrate(&models.User{})
 
 	// Initialize router
 	a.router, err = routes.Init()
