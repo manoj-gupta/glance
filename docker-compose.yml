@@ -12,7 +12,8 @@ services:
   server:
     build:
       context: .
-      dockerfile: Dockerfile
+      #dockerfile: Dockerfile # Development mode
+      dockerfile: manojgupta/glance:latest
     env_file: .env
     depends_on:
       - database
