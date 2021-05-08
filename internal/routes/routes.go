@@ -11,12 +11,11 @@ import (
 func Init() (*gin.Engine, error) {
 	r := gin.Default()
 
-	// Default() allows all origins
-	// r.Use(cors.Default())
-	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
-		AllowCredentials: true,
-	}))
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = true
+	config.AllowCredentials = true
+	config.AddAllowHeaders("authorization")
+	r.Use(cors.New(config))
 
 	// Initialize the routes
 	InitializeRoutes(r)

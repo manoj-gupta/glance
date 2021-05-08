@@ -71,13 +71,7 @@ func UpdateTodo(c *gin.Context) {
 func DeleteTodo(c *gin.Context) {
 	var todo models.Todo
 	id := c.Params.ByName("id")
-
-	if err := db.DB.Where("id = ?", id).Delete(todo); err != nil {
-		c.JSON(http.StatusNotFound,
-			gin.H{"error": "todo not found"})
-		return
-	}
-
+	db.DB.Where("id = ?", id).Delete(todo)
 	c.JSON(http.StatusOK, gin.H{"id:" + id: "deleted"})
 }
 
