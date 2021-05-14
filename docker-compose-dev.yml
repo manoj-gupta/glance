@@ -10,10 +10,9 @@ services:
     volumes:
       - database-data:/var/lib/postgresql/data # persist data even if container shuts down
   server:
-    image: manojgupta/glance:latest
-    restart: always
-    env_file:
-      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile # Development mode
     depends_on:
       - database
     networks:
