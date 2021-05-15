@@ -12,8 +12,46 @@ This mode is used for debugging. You should be running postgres with database cr
 
 ## Using docker-compose (easiest)
 
-- `docker-compose up`
+- `docker-compose up -d --build`
 
 ### database shell
 
 - `docker-compose run database bash`
+
+# Installing docker and docker-compose on Raspberry Pi
+
+1. Install Docker
+
+```
+curl -sSL https://get.docker.com | sh
+```
+
+2. Add permission to Pi User to run docker Commands without sudo
+
+```
+sudo usermod -aG docker pi
+```
+
+3. reboot raspbeery pi to run the docker commands without sudo
+
+4. Test Docker installation
+
+```
+docker run hello-world
+```
+
+5. Install dependencies
+
+```
+sudo apt-get install -y libffi-dev libssl-dev
+
+sudo apt-get install -y python3 python3-pip
+
+sudo apt-get remove python-configparser
+```
+
+6. Install Docker Compose
+
+```
+sudo pip3 -v install docker-compose
+```
