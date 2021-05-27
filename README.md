@@ -6,17 +6,33 @@
 
 This mode is used for debugging. You should be running postgres with database created.
 
-- `docker build . -t go-glance`
-- `docker build -f Dockerfile.dev -t go-glance .` (development)
-- `docker run -p 8080:8080 go-glance`
+```
+docker build . -t go-glance
+docker build -f Dockerfile.dev -t go-glance . (development)
+docker run -p 8080:8080 go-glance
+```
 
 ## Using docker-compose (easiest)
 
-- `docker-compose up -d --build`
+- Start
+
+```
+docker-compose up -d --build
+docker-compose -f docker-compose-dev.yml up -d --build (development)
+```
+
+- Stop
+
+```
+docker-compose down
+docker-compose -f docker-compose-dev.yml down (development)
+```
 
 ### database shell
 
-- `docker-compose run database bash`
+```
+docker-compose run database bash
+```
 
 # Installing docker and docker-compose on Raspberry Pi
 

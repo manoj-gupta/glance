@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -41,7 +40,6 @@ func Register(c *gin.Context) {
 		Email:    data["email"],
 		Password: password,
 	}
-	fmt.Println(user)
 
 	if err := db.DB.Create(&user).Error; err != nil {
 		c.JSON(http.StatusNotAcceptable,
