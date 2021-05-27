@@ -41,7 +41,7 @@ func Register(c *gin.Context) {
 		Password: password,
 	}
 
-	if err := db.DB.Create(user).Error; err != nil {
+	if err := db.DB.Create(&user).Error; err != nil {
 		c.JSON(http.StatusNotAcceptable,
 			gin.H{"error": "user exists"})
 		return
@@ -86,7 +86,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	c.SetCookie(getCookieName(), token, 60*60*24, "/", "localhost", false, true)
+	c.SetCookie(getCookieName(), token, 60*60*24, "/", "", false, true)
 
 	c.JSON(http.StatusOK, gin.H{"message:": "success"})
 }

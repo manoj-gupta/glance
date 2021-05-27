@@ -12,9 +12,18 @@ func Init() (*gin.Engine, error) {
 	r := gin.Default()
 
 	config := cors.DefaultConfig()
-	config.AllowAllOrigins = true
+
+	// origin
+	config.AllowOrigins = []string{"http://localhost:3000", "http://127.0.0.1:3000"}
+
+	// To be able to send tokens to the server.
 	config.AllowCredentials = true
 	config.AddAllowHeaders("authorization")
+
+	// OPTIONS method for ReactJS
+	config.AddAllowMethods("OPTIONS")
+
+	// Register the middleware
 	r.Use(cors.New(config))
 
 	// Initialize the routes
